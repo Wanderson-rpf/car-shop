@@ -16,7 +16,7 @@ export default class CarsODM {
       seatsQty: { type: Number, required: true },
     });
 
-    this._model = models.Cars || model('Cars', this._schema);
+    this._model = models.Cars || model('cars', this._schema);
   }
 
   public async createCar(car: ICar): Promise<ICar> {
