@@ -36,4 +36,15 @@ export default class CarService {
     const [arrayAllCars] = result.map((car) => this.createCarDomain(car));
     return arrayAllCars;
   }
+
+  public async editRegisterCar(id: string, newValue: Partial<ICar>) {
+    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    const carODM = new CarsODM();
+    const result = await carODM.getById(id);
+    if (result.length === 0) throw new NotFound('Car not found');
+
+    const resultUpdate = await carODM.editRegisterCar(id, newValue);
+    const newCar = this.createCarDomain(resultUpdate);
+    return newCar;
+  }
 }

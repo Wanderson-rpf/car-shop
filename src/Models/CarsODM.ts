@@ -1,4 +1,4 @@
-import { Model, Schema, model, models } from 'mongoose';
+import { Model, Schema, UpdateQuery, model, models } from 'mongoose';
 import ICar from '../Interfaces/ICar';
 
 export default class CarsODM {
@@ -31,6 +31,14 @@ export default class CarsODM {
     return this._model.find(
       { _id: id },
       { __v: false },
+    );
+  }
+
+  public async editRegisterCar(id: string, newValue: Partial<ICar>): Promise<ICar | null> {
+    return this._model.findByIdAndUpdate(
+      { _id: id },
+      { ...newValue } as UpdateQuery<ICar>,
+      { new: true, select: { __v: false } },
     );
   }
 }

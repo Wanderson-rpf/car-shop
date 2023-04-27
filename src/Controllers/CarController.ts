@@ -52,4 +52,17 @@ export default class CarController {
       this._next(error);
     }
   }
+
+  public async editRegisterCar() {
+    try {
+      const { id } = this._req.params;
+      const newCar: ICar = { ...this._req.body };
+      
+      const resultUpdate = await this._service.editRegisterCar(id, newCar);
+    
+      return this._res.status(200).json(resultUpdate);
+    } catch (error) {
+      this._next(error);
+    }
+  }
 }
