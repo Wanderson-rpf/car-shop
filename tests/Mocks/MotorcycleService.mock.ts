@@ -1,5 +1,6 @@
+const hondaCB600f = 'Honda Cb 600f Hornet';
 const newMotorcycleInput = {
-  model: 'Honda Cb 600f Hornet',
+  model: hondaCB600f,
   year: 2005,
   color: 'Yellow',
   status: true,
@@ -10,7 +11,7 @@ const newMotorcycleInput = {
 
 const newMotorcycleOutput = {
   id: '6348513f34c397abcad040b2',
-  model: 'Honda Cb 600f Hornet',
+  model: hondaCB600f,
   year: 2005,
   color: 'Yellow',
   status: true,
@@ -22,7 +23,7 @@ const newMotorcycleOutput = {
 const getAllMotorcyclesOutput = [
   {
     id: '634852326b35b59438fbea2f',
-    model: 'Honda Cb 600f Hornet',
+    model: hondaCB600f,
     year: 2005,
     color: 'Yellow',
     status: true,
