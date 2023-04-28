@@ -34,17 +34,17 @@ export default class CarService {
     const carODM = new CarsODM();
     const result = await carODM.getById(id);
     
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
 
-    const [arrayAllCars] = result.map((car) => this.createCarDomain(car));
-    return arrayAllCars;
+    const resultCar = this.createCarDomain(result);
+    return resultCar;
   }
 
   public async editRegisterCar(id: string, newValue: Partial<ICar>) {
     if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const carODM = new CarsODM();
     const result = await carODM.getById(id);
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
 
     const resultUpdate = await carODM.edit(id, newValue);
     const newCar = this.createCarDomain(resultUpdate);
@@ -55,7 +55,7 @@ export default class CarService {
     if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const carODM = new CarsODM();
     const result = await carODM.getById(id);
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
     await carODM.remove(id);
   }
 }

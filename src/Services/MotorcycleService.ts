@@ -35,18 +35,17 @@ export default class MotorcycleService {
     const motorcycleODM = new MotorcycleODM();
     const result = await motorcycleODM.getById(id);
     
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
 
-    const [arrayAllmotorcycles] = result
-      .map((motorcycle) => this.createMotorcycleDomain(motorcycle));
-    return arrayAllmotorcycles;
+    const resultMotorcycle = this.createMotorcycleDomain(result);
+    return resultMotorcycle;
   }
 
   public async editRegister(id: string, newValue: Partial<IMotorcycle>) {
     if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const motorcycleODM = new MotorcycleODM();
     const result = await motorcycleODM.getById(id);
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
 
     const resultUpdate = await motorcycleODM.edit(id, newValue);
     const newCar = this.createMotorcycleDomain(resultUpdate);
@@ -57,7 +56,7 @@ export default class MotorcycleService {
     if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const motorcycleODM = new MotorcycleODM();
     const result = await motorcycleODM.getById(id);
-    if (result.length === 0) throw new NotFound(errorNotFound);
+    if (!result) throw new NotFound(errorNotFound);
     await motorcycleODM.remove(id);
   }
 }
