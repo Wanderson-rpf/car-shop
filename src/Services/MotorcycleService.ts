@@ -38,4 +38,15 @@ export default class MotorcycleService {
       .map((motorcycle) => this.createMotorcycleDomain(motorcycle));
     return arrayAllmotorcycles;
   }
+
+  public async editRegister(id: string, newValue: Partial<IMotorcycle>) {
+    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    const motorcycleODM = new MotorcycleODM();
+    const result = await motorcycleODM.getById(id);
+    if (result.length === 0) throw new NotFound('Motorcycle not found');
+
+    const resultUpdate = await motorcycleODM.edit(id, newValue);
+    const newCar = this.createMotorcycleDomain(resultUpdate);
+    return newCar;
+  }
 }

@@ -52,4 +52,17 @@ export default class MotorcycleController {
       this._next(error);
     }
   }
+
+  public async editRegister() {
+    try {
+      const { id } = this._req.params;
+      const newCar: IMotorcycle = { ...this._req.body };
+      
+      const resultUpdate = await this._service.editRegister(id, newCar);
+    
+      return this._res.status(200).json(resultUpdate);
+    } catch (error) {
+      this._next(error);
+    }
+  }
 }
