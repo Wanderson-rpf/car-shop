@@ -15,7 +15,7 @@ export default class CarService {
 
   public async createCar(car: ICar) {
     const carODM = new CarsODM();
-    const newCar = await carODM.createCar(car);
+    const newCar = await carODM.create(car);
     return this.createCarDomain(newCar);
   }
 
@@ -43,7 +43,7 @@ export default class CarService {
     const result = await carODM.getById(id);
     if (result.length === 0) throw new NotFound('Car not found');
 
-    const resultUpdate = await carODM.editRegisterCar(id, newValue);
+    const resultUpdate = await carODM.edit(id, newValue);
     const newCar = this.createCarDomain(resultUpdate);
     return newCar;
   }
