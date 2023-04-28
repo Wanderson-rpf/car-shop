@@ -57,10 +57,20 @@ export default class CarController {
     try {
       const { id } = this._req.params;
       const newCar: ICar = { ...this._req.body };
-      
+
       const resultUpdate = await this._service.editRegisterCar(id, newCar);
-    
+
       return this._res.status(200).json(resultUpdate);
+    } catch (error) {
+      this._next(error);
+    }
+  }
+
+  public async remove() {
+    try {
+      const { id } = this._req.params;
+      await this._service.remove(id);
+      return this._res.status(200).json({ message: 'Vehicle deleted.' });
     } catch (error) {
       this._next(error);
     }

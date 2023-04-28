@@ -5,6 +5,9 @@ import MotorcycleODM from '../Models/MotorcycleODM';
 import InvalidParam from '../Errors/InvalidParam';
 import NotFound from '../Errors/NotFound';
 
+const errorNotFound = 'Motorcycle not found';
+const errorInvalidParam = 'Invalid mongo id';
+
 export default class MotorcycleService {
   private createMotorcycleDomain(motorcycle: IMotorcycle | null): Motorcycle | null {
     if (motorcycle) {
@@ -28,11 +31,11 @@ export default class MotorcycleService {
   }
 
   public async getById(id: string) {
-    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const motorcycleODM = new MotorcycleODM();
     const result = await motorcycleODM.getById(id);
     
-    if (result.length === 0) throw new NotFound('Motorcycle not found');
+    if (result.length === 0) throw new NotFound(errorNotFound);
 
     const [arrayAllmotorcycles] = result
       .map((motorcycle) => this.createMotorcycleDomain(motorcycle));
@@ -40,13 +43,21 @@ export default class MotorcycleService {
   }
 
   public async editRegister(id: string, newValue: Partial<IMotorcycle>) {
-    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const motorcycleODM = new MotorcycleODM();
     const result = await motorcycleODM.getById(id);
-    if (result.length === 0) throw new NotFound('Motorcycle not found');
+    if (result.length === 0) throw new NotFound(errorNotFound);
 
     const resultUpdate = await motorcycleODM.edit(id, newValue);
     const newCar = this.createMotorcycleDomain(resultUpdate);
     return newCar;
+  }
+
+  public async remove(id: string) {
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
+    const motorcycleODM = new MotorcycleODM();
+    const result = await motorcycleODM.getById(id);
+    if (result.length === 0) throw new NotFound(errorNotFound);
+    await motorcycleODM.remove(id);
   }
 }

@@ -5,6 +5,9 @@ import NotFound from '../Errors/NotFound';
 import ICar from '../Interfaces/ICar';
 import CarsODM from '../Models/CarsODM';
 
+const errorNotFound = 'Car not found';
+const errorInvalidParam = 'Invalid mongo id';
+
 export default class CarService {
   private createCarDomain(car: ICar | null): Car | null {
     if (car) {
@@ -27,24 +30,32 @@ export default class CarService {
   }
 
   public async getById(id: string) {
-    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const carODM = new CarsODM();
     const result = await carODM.getById(id);
     
-    if (result.length === 0) throw new NotFound('Car not found');
+    if (result.length === 0) throw new NotFound(errorNotFound);
 
     const [arrayAllCars] = result.map((car) => this.createCarDomain(car));
     return arrayAllCars;
   }
 
   public async editRegisterCar(id: string, newValue: Partial<ICar>) {
-    if (!isValidObjectId(id)) throw new InvalidParam('Invalid mongo id');
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
     const carODM = new CarsODM();
     const result = await carODM.getById(id);
-    if (result.length === 0) throw new NotFound('Car not found');
+    if (result.length === 0) throw new NotFound(errorNotFound);
 
     const resultUpdate = await carODM.edit(id, newValue);
     const newCar = this.createCarDomain(resultUpdate);
     return newCar;
+  }
+
+  public async remove(id: string) {
+    if (!isValidObjectId(id)) throw new InvalidParam(errorInvalidParam);
+    const carODM = new CarsODM();
+    const result = await carODM.getById(id);
+    if (result.length === 0) throw new NotFound(errorNotFound);
+    await carODM.remove(id);
   }
 }

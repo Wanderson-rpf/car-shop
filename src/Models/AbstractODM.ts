@@ -33,4 +33,8 @@ export default abstract class AbstractODM<T> {
       { new: true, select: { __v: false } },
     );
   }
+
+  public async remove(id: string) {
+    return this._model.findOneAndDelete({ _id: id });
+  }
 }
