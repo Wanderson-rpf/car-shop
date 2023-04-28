@@ -53,9 +53,44 @@ const getByIdCarOutput = {
   seatsQty: 5,
 };
 
+const dataCarForEditing = {
+  id: '634852326b35b59438fbea2f',
+  model: 'Marea',
+  year: 1992,
+  color: 'Red',
+  status: true,
+  buyValue: 12.000,
+  doorsQty: 2,
+  seatsQty: 5,
+};
+
+const newDataCar = {
+  model: 'Teste01',
+  year: 1992,
+  color: 'Red',
+  status: true,
+  buyValue: 12.000,
+  doorsQty: 2,
+  seatsQty: 5,
+};
+
+const resultEditDataCar = {
+  id: '634852326b35b59438fbea2f',
+  model: 'Teste01',
+  year: 1992,
+  color: 'Red',
+  status: true,
+  buyValue: 12.000,
+  doorsQty: 2,
+  seatsQty: 5,
+};
+
 export {
   newCarOutput,
   newCarInput,
   getAllCarsOutput,
   getByIdCarOutput,
+  dataCarForEditing,
+  newDataCar,
+  resultEditDataCar,
 };
