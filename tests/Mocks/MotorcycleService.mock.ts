@@ -86,6 +86,17 @@ const resultEditDataMotorcycle = {
   engineCapacity: 600,
 };
 
+const findDelete = {
+  id: '644c3d8b3d1267845f9f026b',
+  model: 'Honda1',
+  year: 2005,
+  color: 'Yellow',
+  status: true,
+  buyValue: 30,
+  category: 'Street',
+  engineCapacity: 600,
+};
+
 export {
   newMotorcycleOutput,
   newMotorcycleInput,
@@ -94,4 +105,5 @@ export {
   dataMotorcycleForEditing,
   newDataMotorcycle,
   resultEditDataMotorcycle,
+  findDelete,
 };

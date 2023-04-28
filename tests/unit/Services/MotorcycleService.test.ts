@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import { Model } from 'mongoose';
 import {
   dataMotorcycleForEditing,
+  findDelete,
   getAllMotorcyclesOutput,
   getByIdMotorcycleOutput,
   newDataMotorcycle,
@@ -44,7 +45,7 @@ describe('Teste de rotas de Motorcycle.', function () {
     it(
       '2.2 - Consulta por ID os registros de motos no banco de dados com sucesso.',
       async function () {
-        sinon.stub(Model, 'find').resolves([getByIdMotorcycleOutput]);
+        sinon.stub(Model, 'findById').resolves(getByIdMotorcycleOutput);
 
         const service = new MotorcycleService();
         const result = await service.getById('634852326b35b59438fbea31');
@@ -72,12 +73,12 @@ describe('Teste de rotas de Motorcycle.', function () {
     it(
       '3.1 - Edita um registro de carros no banco de dados com sucesso.',
       async function () {
-        sinon.stub(Model, 'find').resolves([dataMotorcycleForEditing]);
+        sinon.stub(Model, 'findById').resolves(dataMotorcycleForEditing);
         sinon.stub(Model, 'findByIdAndUpdate').resolves(resultEditDataMotorcycle);
 
         const service = new MotorcycleService();
         const result = await service.editRegister('634852326b35b59438fbea2f', newDataMotorcycle);
-        
+
         expect(result).to.be.deep.equal(resultEditDataMotorcycle);
       },
     );
@@ -96,5 +97,18 @@ describe('Teste de rotas de Motorcycle.', function () {
         }
       },
     );
+  });
+
+  describe('4 - Teste remoção de registro rota /motorcycles/:id DELETE', function () {
+    it('4.1 - Deleta registro de uma moto no banco de dados com sucesso.', async function () {
+      sinon.stub(Model, 'findById').resolves(findDelete);
+      sinon.stub(Model, 'findOneAndDelete').resolves();
+
+      const service = new MotorcycleService();
+      const result = await service.remove('644c3d8b3d1267845f9f026b');
+      console.log(result);
+
+      expect(result).to.be.deep.equal(newMotorcycleOutput);
+    });
   });
 });

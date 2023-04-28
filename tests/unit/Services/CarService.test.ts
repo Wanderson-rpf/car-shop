@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import { Model } from 'mongoose';
 import {
   dataCarForEditing,
+  findDeleteCar,
   getAllCarsOutput,
   getByIdCarOutput,
   newCarInput,
@@ -11,6 +12,9 @@ import {
   resultEditDataCar,
 } from '../../Mocks/CarService.mock';
 import CarService from '../../../src/Services/CarService';
+
+const ERROR_NOT_FOUND = 'Car not found';
+const ERROR_INVALID_PARAM = 'Invalid mongo id';
 
 describe('Teste de rotas de Car.', function () {
   beforeEach(function () {
@@ -44,7 +48,7 @@ describe('Teste de rotas de Car.', function () {
     it(
       '2.2 - Consulta por ID os registros de carros no banco de dados com sucesso.',
       async function () {
-        sinon.stub(Model, 'find').resolves([getByIdCarOutput]);
+        sinon.stub(Model, 'findById').resolves(getByIdCarOutput);
 
         const service = new CarService();
         const result = await service.getById('634852326b35b59438fbea2f');
@@ -62,31 +66,31 @@ describe('Teste de rotas de Car.', function () {
           const service = new CarService();
           await service.getById('634852326b35b59438fbea2f111');
         } catch (error) {
-          expect((error as Error).message).to.be.equal('Invalid mongo id');
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
         }
       },
     );
 
-    // it(
-    //   '4.3 - Consulta por ID os registros de carros no banco de dados com ID inexistente.',
-    //   async function () {
-    //     sinon.stub(Model, 'find').resolves();
+    it(
+      '4.3 - Consulta por ID os registros de carros no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves();
 
-    //     try {
-    //       const service = new CarService();
-    //       await service.getById('1111222233330000ffffcccc');
-    //     } catch (error) {
-    //       expect((error as Error).message).to.be.equal('Car not found');
-    //     }
-    //   },
-    // );
+        try {
+          const service = new CarService();
+          await service.getById('1111222233330000ffffcccc');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
+        }
+      },
+    );
   });
 
   describe('3 - Teste edição de registro rota /cars/:id PUT', function () {
     it(
       '3.1 - Edita um registro de carros no banco de dados com sucesso.',
       async function () {
-        sinon.stub(Model, 'find').resolves([dataCarForEditing]);
+        sinon.stub(Model, 'findById').resolves(dataCarForEditing);
         sinon.stub(Model, 'findByIdAndUpdate').resolves(resultEditDataCar);
 
         const service = new CarService();
@@ -106,7 +110,35 @@ describe('Teste de rotas de Car.', function () {
           const service = new CarService();
           await service.getById('634852326b35b59438fbea2f111');
         } catch (error) {
-          expect((error as Error).message).to.be.equal('Invalid mongo id');
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+  });
+
+  describe('4 - Teste remoção de registro rota /cars/:id DELETE', function () {
+    it('4.1 - Deleta registro de um carro no banco de dados com sucesso.', async function () {
+      sinon.stub(Model, 'findById').resolves(findDeleteCar);
+      sinon.stub(Model, 'findOneAndDelete').resolves();
+
+      const service = new CarService();
+      const result = await service.remove('644c3d8b3d1267845f9f026b');
+      console.log(result);
+
+      expect(result).to.be.deep.equal('');
+    });
+
+    it(
+      '4.2 - Tenta remover um registro de carro no banco de dados com ID invalido.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves(findDeleteCar);
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new CarService();
+          await service.remove('644c3d8b3d1267845f9f026b');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
         }
       },
     );

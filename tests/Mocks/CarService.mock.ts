@@ -85,6 +85,17 @@ const resultEditDataCar = {
   seatsQty: 5,
 };
 
+const findDeleteCar = {
+  id: '644c3a7e9ce725f859a3b808',
+  model: 'Tempra1',
+  year: 1995,
+  color: 'Black',
+  status: false,
+  buyValue: 39,
+  doorsQty: 2,
+  seatsQty: 5,
+};
+
 export {
   newCarOutput,
   newCarInput,
@@ -93,4 +104,5 @@ export {
   dataCarForEditing,
   newDataCar,
   resultEditDataCar,
+  findDeleteCar,
 };
