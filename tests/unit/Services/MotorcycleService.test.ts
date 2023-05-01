@@ -161,7 +161,7 @@ describe('SERVICE: Teste de rotas de Motorcycle.', function () {
     it(
       '4.3 - Tenta remover um registro de moto no banco de dados com ID inexistente.',
       async function () {
-        sinon.stub(Model, 'findById').resolves(findDelete);
+        sinon.stub(Model, 'findById').resolves();
         sinon.stub(Model, 'findByIdAndUpdate').resolves();
 
         try {

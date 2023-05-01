@@ -161,7 +161,7 @@ describe('SERVICE: Teste rotas de Car.', function () {
     it(
       '4.3 - Tenta remover um registro de carro no banco de dados com ID inexistente.',
       async function () {
-        sinon.stub(Model, 'findById').resolves(findDeleteCar);
+        sinon.stub(Model, 'findById').resolves();
         sinon.stub(Model, 'findByIdAndUpdate').resolves();
 
         try {
