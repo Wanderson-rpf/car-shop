@@ -96,6 +96,8 @@ const findDeleteCar = {
   seatsQty: 5,
 };
 
+const arrayCarNull = [null, null, null];
+
 export {
   newCarOutput,
   newCarInput,
@@ -105,4 +107,5 @@ export {
   newDataCar,
   resultEditDataCar,
   findDeleteCar,
+  arrayCarNull,
 };

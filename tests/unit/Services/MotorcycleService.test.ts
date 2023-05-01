@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Model } from 'mongoose';
 import {
+  arrayNull,
   dataMotorcycleForEditing,
   findDelete,
   getAllMotorcyclesOutput,
@@ -171,5 +172,16 @@ describe('SERVICE: Teste de rotas de Motorcycle.', function () {
         }
       },
     );
+  });
+
+  describe('5 - Teste create motorcycle domain com valor NULL', function () {
+    it('5.1 - Tenta utilizar o metodo createMotorcycleDomain() com valor null.', async function () {
+      sinon.stub(Model, 'find').resolves(arrayNull);
+
+      const service = new MotorcycleService();
+      const result = await service.getAll();
+
+      expect(result).to.be.deep.equal(arrayNull);
+    });
   });
 });

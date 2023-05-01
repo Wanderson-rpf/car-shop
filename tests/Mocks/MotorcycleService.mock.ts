@@ -97,6 +97,8 @@ const findDelete = {
   engineCapacity: 600,
 };
 
+const arrayNull = [null, null, null];
+
 export {
   newMotorcycleOutput,
   newMotorcycleInput,
@@ -106,4 +108,5 @@ export {
   newDataMotorcycle,
   resultEditDataMotorcycle,
   findDelete,
+  arrayNull,
 };

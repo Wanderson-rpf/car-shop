@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { Model } from 'mongoose';
 import {
+  arrayCarNull,
   dataCarForEditing,
   findDeleteCar,
   getAllCarsOutput,
@@ -171,5 +172,16 @@ describe('SERVICE: Teste rotas de Car.', function () {
         }
       },
     );
+  });
+
+  describe('5 - Teste create car domain com valor NULL', function () {
+    it('5.1 - Tenta utilizar o metodo createCarDomain() com valor null.', async function () {
+      sinon.stub(Model, 'find').resolves(arrayCarNull);
+
+      const service = new CarService();
+      const result = await service.getAll();
+
+      expect(result).to.be.deep.equal(arrayCarNull);
+    });
   });
 });
