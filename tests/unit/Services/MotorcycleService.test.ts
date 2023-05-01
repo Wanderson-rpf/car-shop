@@ -13,7 +13,10 @@ import {
 } from '../../Mocks/MotorcycleService.mock';
 import MotorcycleService from '../../../src/Services/MotorcycleService';
 
-describe('Teste de rotas de Motorcycle.', function () {
+const ERROR_NOT_FOUND = 'Motorcycle not found';
+const ERROR_INVALID_PARAM = 'Invalid mongo id';
+
+describe('SERVICE: Teste de rotas de Motorcycle.', function () {
   beforeEach(function () {
     sinon.restore();
   });
@@ -63,15 +66,29 @@ describe('Teste de rotas de Motorcycle.', function () {
           const service = new MotorcycleService();
           await service.getById('634852326b35b59438fbea2f111');
         } catch (error) {
-          expect((error as Error).message).to.be.equal('Invalid mongo id');
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+
+    it(
+      '2.4 - Consulta por ID os registros de motos no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves();
+
+        try {
+          const service = new MotorcycleService();
+          await service.getById('1111222233330000ffffcccc');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
         }
       },
     );
   });
 
-  describe('3 - Teste edição de registro rota /cars/:id PUT', function () {
+  describe('3 - Teste edição de registro rota /motorcycles/:id PUT', function () {
     it(
-      '3.1 - Edita um registro de carros no banco de dados com sucesso.',
+      '3.1 - Edita um registro de moto no banco de dados com sucesso.',
       async function () {
         sinon.stub(Model, 'findById').resolves(dataMotorcycleForEditing);
         sinon.stub(Model, 'findByIdAndUpdate').resolves(resultEditDataMotorcycle);
@@ -84,16 +101,31 @@ describe('Teste de rotas de Motorcycle.', function () {
     );
 
     it(
-      '3.2 - Tenta editar um registro de carro no banco de dados com ID invalido.',
+      '3.2 - Tenta editar um registro de moto no banco de dados com ID invalido.',
       async function () {
-        sinon.stub(Model, 'find').resolves();
+        sinon.stub(Model, 'findById').resolves();
         sinon.stub(Model, 'findByIdAndUpdate').resolves();
 
         try {
           const service = new MotorcycleService();
-          await service.getById('634852326b35b59438fbea2f111');
+          await service.editRegister('634852326b35b59438fbea2f111', newDataMotorcycle);
         } catch (error) {
-          expect((error as Error).message).to.be.equal('Invalid mongo id');
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+
+    it(
+      '3.3 - Tenta editar um registro de moto no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves();
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new MotorcycleService();
+          await service.editRegister('1111222233330000ffffcccc', newDataMotorcycle);
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
         }
       },
     );
@@ -106,9 +138,38 @@ describe('Teste de rotas de Motorcycle.', function () {
 
       const service = new MotorcycleService();
       const result = await service.remove('644c3d8b3d1267845f9f026b');
-      console.log(result);
 
-      expect(result).to.be.deep.equal(newMotorcycleOutput);
+      expect(result).to.be.deep.equal({ message: 'Motorcycle register deleted.' });
     });
+
+    it(
+      '4.2 - Tenta remover um registro de moto no banco de dados com ID invalido.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves(findDelete);
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new MotorcycleService();
+          await service.remove('644c3d8b3d1267845f9f026b111');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+
+    it(
+      '4.3 - Tenta remover um registro de moto no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves(findDelete);
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new MotorcycleService();
+          await service.remove('1111222233330000ffffcccc');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
+        }
+      },
+    );
   });
 });

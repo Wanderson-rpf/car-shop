@@ -16,7 +16,7 @@ import CarService from '../../../src/Services/CarService';
 const ERROR_NOT_FOUND = 'Car not found';
 const ERROR_INVALID_PARAM = 'Invalid mongo id';
 
-describe('Teste de rotas de Car.', function () {
+describe('SERVICE: Teste rotas de Car.', function () {
   beforeEach(function () {
     sinon.restore();
   });
@@ -72,7 +72,7 @@ describe('Teste de rotas de Car.', function () {
     );
 
     it(
-      '4.3 - Consulta por ID os registros de carros no banco de dados com ID inexistente.',
+      '2.4 - Consulta por ID os registros de carros no banco de dados com ID inexistente.',
       async function () {
         sinon.stub(Model, 'findById').resolves();
 
@@ -103,14 +103,29 @@ describe('Teste de rotas de Car.', function () {
     it(
       '3.2 - Tenta editar um registro de carro no banco de dados com ID invalido.',
       async function () {
-        sinon.stub(Model, 'find').resolves();
+        sinon.stub(Model, 'findById').resolves();
         sinon.stub(Model, 'findByIdAndUpdate').resolves();
 
         try {
           const service = new CarService();
-          await service.getById('634852326b35b59438fbea2f111');
+          await service.editRegisterCar('634852326b35b59438fbea2f111', newDataCar);
         } catch (error) {
           expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+
+    it(
+      '3.3 - Tenta editar um registro de carro no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves();
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new CarService();
+          await service.editRegisterCar('1111222233330000ffffcccc', newDataCar);
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
         }
       },
     );
@@ -123,9 +138,8 @@ describe('Teste de rotas de Car.', function () {
 
       const service = new CarService();
       const result = await service.remove('644c3d8b3d1267845f9f026b');
-      console.log(result);
 
-      expect(result).to.be.deep.equal('');
+      expect(result).to.be.deep.equal({ message: 'Car register deleted.' });
     });
 
     it(
@@ -136,9 +150,24 @@ describe('Teste de rotas de Car.', function () {
 
         try {
           const service = new CarService();
-          await service.remove('644c3d8b3d1267845f9f026b');
+          await service.remove('644c3d8b3d1267845f9f026b111');
         } catch (error) {
           expect((error as Error).message).to.be.equal(ERROR_INVALID_PARAM);
+        }
+      },
+    );
+
+    it(
+      '4.3 - Tenta remover um registro de carro no banco de dados com ID inexistente.',
+      async function () {
+        sinon.stub(Model, 'findById').resolves(findDeleteCar);
+        sinon.stub(Model, 'findByIdAndUpdate').resolves();
+
+        try {
+          const service = new CarService();
+          await service.remove('1111222233330000ffffcccc');
+        } catch (error) {
+          expect((error as Error).message).to.be.equal(ERROR_NOT_FOUND);
         }
       },
     );
