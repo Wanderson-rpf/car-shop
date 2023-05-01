@@ -69,8 +69,8 @@ export default class MotorcycleController {
   public async remove() {
     try {
       const { id } = this._req.params;
-      await this._service.remove(id);
-      return this._res.status(200).json({ message: 'Vehicle deleted.' });
+      const { message } = await this._service.remove(id);
+      return this._res.status(200).json({ message });
     } catch (error) {
       this._next(error);
     }

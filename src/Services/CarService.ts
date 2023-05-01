@@ -57,5 +57,6 @@ export default class CarService {
     const result = await carODM.getById(id);
     if (!result) throw new NotFound(errorNotFound);
     await carODM.remove(id);
+    return { message: 'Car register deleted.' };
   }
 }

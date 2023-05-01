@@ -58,5 +58,6 @@ export default class MotorcycleService {
     const result = await motorcycleODM.getById(id);
     if (!result) throw new NotFound(errorNotFound);
     await motorcycleODM.remove(id);
+    return { message: 'Motorcycle register deleted.' };
   }
 }
