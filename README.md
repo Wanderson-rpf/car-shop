@@ -460,6 +460,12 @@ Na pasta clonada, tem o arquivo docker-compose.yml
 docker-compose up -d --build
 ```
 
+3. Instalando dependências.
+
+```bash
+npm install
+```
+
     
 ## Testes
 
